@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@700&display=swap" rel="stylesheet" />
+  <title>Valentine</title>
+  <link rel="stylesheet" href="Valentine.css" />
+</head>
+<body>
+  <main class="screen" aria-label="Valentine screen">
+    <div class="sparkles" aria-hidden="true">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+
+    <section class="center-content">
+      <p class="headline">เธอ... เค้ามีเรื่องสำคัญจะบอก...</p>
+      <button class="cta" type="button">
+        ลองเปิดอ่านดูนะ
+        <span class="mail">💌</span>
+      </button>
+    </section>
+  </main>
+  <script>
+    (function () {
+      const headline = document.querySelector(".headline");
+      const cta = document.querySelector(".cta");
+      if (!headline || !cta) return;
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const fullText = (headline.textContent || "").trim();
+      const segmenter = ("Segmenter" in Intl)
+        ? new Intl.Segmenter("th", { granularity: "grapheme" })
+        : null;
+      const chars = segmenter
+        ? Array.from(segmenter.segment(fullText), function (part) { return part.segment; })
+        : Array.from(fullText);
+
+      document.body.classList.add("is-typing-sequence");
+
+      if (reduceMotion) {
+        headline.textContent = fullText;
+        cta.classList.add("is-visible");
+        return;
+      }
+
+      headline.textContent = "";
+      headline.classList.add("typing");
+
+      let index = 0;
+      const stepMs = 85;
+      const timer = window.setInterval(function () {
+        headline.textContent += chars[index];
+        index += 1;
+
+        if (index >= chars.length) {
+          window.clearInterval(timer);
+          headline.classList.remove("typing");
+          window.setTimeout(function () {
+            cta.classList.add("is-visible");
+          }, 180);
+        }
+      }, stepMs);
+    })();
+  </script>
+</body>
+</html>
