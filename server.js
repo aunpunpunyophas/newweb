@@ -450,3 +450,4 @@ initDatabase()
     console.error("Failed to init database:", error);
     process.exit(1);
   });
+// กฟไกฟไกไฟกไฟ กไฟ กไฟ ฟำ
